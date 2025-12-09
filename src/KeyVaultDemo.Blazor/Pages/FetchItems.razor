@@ -1,0 +1,85 @@
+@page "/items"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+
+@using System.Net.Http.Headers
+@using System.Net.Http.Json
+
+@inject IHttpClientFactory HttpClientFactory
+@inject Microsoft.Identity.Web.ITokenAcquisition TokenAcquisition
+@inject IConfiguration Configuration
+
+<h3>Sample Items from API</h3>
+
+@if (_isLoading)
+{
+    <p>Loading...</p>
+}
+else if (!string.IsNullOrEmpty(_error))
+{
+    <p class="text-danger">Error: @_error</p>
+}
+else if (_items is { Count: > 0 })
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Created At (UTC)</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in _items)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.CreatedAt.ToString("u")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No items returned.</p>
+}
+
+@code {
+    private bool _isLoading = true;
+    private string? _error;
+    private List<SampleItemDto>? _items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var scope = Configuration["Api:Scope"] ?? string.Empty;
+            var scopes = string.IsNullOrWhiteSpace(scope)
+                ? Array.Empty<string>()
+                : new[] { scope };
+
+            var accessToken = await TokenAcquisition.GetAccessTokenForUserAsync(scopes);
+
+            var client = HttpClientFactory.CreateClient("ApiClient");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            _items = await client.GetFromJsonAsync<List<SampleItemDto>>("items");
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    public class SampleItemDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; }
+    }
+}

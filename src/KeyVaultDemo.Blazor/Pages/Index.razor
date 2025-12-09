@@ -1,0 +1,30 @@
+@page "/"
+
+<h1>KeyVault Demo</h1>
+
+<p>Welcome to the KeyVault Demo application!</p>
+
+<p>This Blazor Server application demonstrates:</p>
+
+<ul>
+    <li><strong>Azure AD Authentication</strong> - Sign in with your Microsoft account</li>
+    <li><strong>Secure API Communication</strong> - Calls a protected Web API with JWT bearer tokens</li>
+    <li><strong>Azure Key Vault Integration</strong> - API retrieves database connection string from Key Vault</li>
+    <li><strong>Azure SQL Database</strong> - API queries sample data from Azure SQL</li>
+</ul>
+
+<h2>Architecture</h2>
+
+<ul>
+    <li><strong>App A</strong> - Key Vault client (service principal for API to access Key Vault)</li>
+    <li><strong>App B</strong> - Web API (protected by Azure AD, exposes /items endpoint)</li>
+    <li><strong>App C</strong> - Blazor Server app (this app, authenticates users and calls API)</li>
+</ul>
+
+<p>
+    <a href="/items" class="btn btn-primary">View Sample Items</a>
+</p>
+
+@code {
+
+}

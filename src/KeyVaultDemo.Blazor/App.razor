@@ -1,0 +1,20 @@
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Authorization
+
+<CascadingAuthenticationState>
+    <Router AppAssembly="typeof(App).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)">
+                <NotAuthorized>
+                    <p>You are not authorized to access this page. Please log in.</p>
+                    <a href="MicrosoftIdentity/Account/SignIn">Log in</a>
+                </NotAuthorized>
+            </AuthorizeRouteView>
+        </Found>
+        <NotFound>
+            <LayoutView Layout="typeof(MainLayout)">
+                <p>Sorry, there is nothing at this address.</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>
