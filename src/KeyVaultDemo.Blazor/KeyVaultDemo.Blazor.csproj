@@ -6,7 +6,7 @@
     <UserSecretsId>b5a7f3c9-4d2e-4b1a-9f8e-2c6d7a3b1e5f</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Identity.Web" Version="3.0.1" />
-    <PackageReference Include="Microsoft.Identity.Web.UI" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="4.1.1" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="4.1.1" />
   </ItemGroup>
 </Project>
